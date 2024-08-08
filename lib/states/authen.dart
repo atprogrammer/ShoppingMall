@@ -10,6 +10,10 @@ class Authen extends StatefulWidget {
 class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: SafeArea(
+        child: Text('ทดสอบ'),
+      ),
+    );
   }
 }
