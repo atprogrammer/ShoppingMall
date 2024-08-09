@@ -1,3 +1,6 @@
+
+import 'package:flutter/material.dart';
+
 class MyConstant {
   // General
   static const String appName = 'Shopping Mall'; // ชื่อของแอปพลิเคชันที่ใช้ทั่วทั้งแอป
@@ -14,4 +17,31 @@ class MyConstant {
   static const String image2 = 'images/image2.png'; // ที่อยู่ไฟล์ของภาพ image2
   static const String image3 = 'images/image3.png'; // ที่อยู่ไฟล์ของภาพ image3
   static const String image4 = 'images/image4.png'; // ที่อยู่ไฟล์ของภาพ image4
+
+  // Color
+  static const Color primary = Color(0xff87861d); // สีหลักที่ใช้ในแอป
+  static const Color dark = Color(0xff575900); // สีเข้มที่ใช้ในแอป
+  static const Color light = Color(0xffb9b64e); // สีอ่อนที่ใช้ในแอป
+
+  // Style
+  // กำหนดรูปแบบตัวอักษรสำหรับหัวข้อระดับ 1 (ขนาด 24, หนา, สีเข้ม)
+  TextStyle h1Style() => TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: dark,
+  );
+
+  // กำหนดรูปแบบตัวอักษรสำหรับหัวข้อระดับ 2 (ขนาด 18, หนาพอสมควร, สีเข้ม)
+  TextStyle h2Style() => TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: dark,
+  );
+
+  // กำหนดรูปแบบตัวอักษรสำหรับหัวข้อระดับ 3 (ขนาด 14, น้ำหนักปกติ, สีเข้ม)
+  TextStyle h3Style() => TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    color: dark,
+  );
 }
