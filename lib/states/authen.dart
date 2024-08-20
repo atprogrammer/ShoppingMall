@@ -24,19 +24,53 @@ class _AuthenState extends State<Authen> {
         .width; // เก็บความกว้างของหน้าจอในตัวแปร size
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          // ใช้ ListView เพื่อแสดงเนื้อหาหลายๆ ส่วนแบบเลื่อนขึ้นลงได้
-          children: [
-            buildImage(
-                size), // เรียกใช้ฟังก์ชัน buildImage เพื่อแสดงภาพในหน้า UI
-            buildAppName(), // เรียกใช้ฟังก์ชัน buildAppName เพื่อแสดงชื่อแอปในหน้า UI
-            buildUser(
-                size), // เรียกใช้ฟังก์ชัน buildUser เพื่อแสดงช่องกรอกชื่อผู้ใช้
-            buildPassWord(
-                size), // เรียกใช้ฟังก์ชัน buildPassWord เพื่อแสดงช่องกรอกรหัสผ่าน
-          ],
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          // เมื่อผู้ใช้แตะที่จอ ฟังก์ชันนี้จะทำการยกเลิกการโฟกัสของ TextFormField หรือคีย์บอร์ด
+          behavior: HitTestBehavior.opaque,
+          // กำหนดพฤติกรรมของ GestureDetector ให้สามารถตรวจจับการแตะที่จอได้ทั่วพื้นที่
+          child: ListView(
+            // ใช้ ListView เพื่อแสดงเนื้อหาหลายๆ ส่วนแบบเลื่อนขึ้นลงได้
+            children: [
+              buildImage(
+                  size), // เรียกใช้ฟังก์ชัน buildImage เพื่อแสดงภาพในหน้า UI
+              buildAppName(), // เรียกใช้ฟังก์ชัน buildAppName เพื่อแสดงชื่อแอปในหน้า UI
+              buildUser(
+                  size), // เรียกใช้ฟังก์ชัน buildUser เพื่อแสดงช่องกรอกชื่อผู้ใช้
+              buildPassWord(
+                  size), // เรียกใช้ฟังก์ชัน buildPassWord เพื่อแสดงช่องกรอกรหัสผ่าน
+              buidLogin(
+                  size), // เรียกใช้ฟังก์ชัน buildbuidLogin เพื่อแสดงปุ่มกดล๊อกอิน
+              buildCreateAccount(),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Row buidLogin(double size) {
+    // ฟังก์ชัน buidLogin สร้างแถว (Row) ที่มีการจัดเรียงปุ่มเข้าสู่ระบบให้อยู่กึ่งกลางของหน้าจอ
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      // จัดตำแหน่ง Row ให้อยู่กึ่งกลางแนวนอน
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
+          // กำหนดระยะห่างด้านบนและล่างของ Container
+          width: size * 0.65,
+          // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
+          child: ElevatedButton(
+            // สร้างปุ่ม ElevatedButton
+            style: MyConstant().myButtonStyle(),
+            // ใช้รูปแบบปุ่มจากฟังก์ชัน myButtonStyle ใน MyConstant
+            onPressed: () {},
+            // ฟังก์ชันที่จะถูกเรียกเมื่อปุ่มถูกกด
+            child: Text('Login'),
+            // ข้อความที่แสดงบนปุ่ม
+          ),
+        ),
+      ],
     );
   }
 
@@ -174,6 +208,30 @@ class _AuthenState extends State<Authen> {
           child: ShowImage(
               path: MyConstant
                   .image1), // แสดงภาพจาก ShowImage โดยใช้ path จาก MyConstant
+        ),
+      ],
+    );
+  }
+}
+
+class buildCreateAccount extends StatelessWidget {
+  const buildCreateAccount({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ShowTitle(
+          title: 'Non Account ?',
+          testStyle: MyConstant().h3Style(),
+        ),
+        TextButton(
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.rountCreateAccount),
+          child: Text('Create Account'),
         ),
       ],
     );

@@ -10,9 +10,9 @@ import 'package:shoppingmall/utility/my_constant.dart'; // นำเข้าไ
 final Map<String, WidgetBuilder> map ={
   '/authen': (BuildContext context) => Authen(), // เส้นทางสำหรับหน้า Authen
   '/createAccount': (BuildContext context) => CreateAccount(), // เส้นทางสำหรับหน้า CreateAccount
-  'buyerService': (BuildContext context) => BuyerService(), // เส้นทางสำหรับหน้า BuyerService
-  'selerService': (BuildContext context) => SalerService(), // เส้นทางสำหรับหน้า SalerService
-  'riderService': (BuildContext context) => RiderService(), // เส้นทางสำหรับหน้า RiderService
+  '/buyerService': (BuildContext context) => BuyerService(), // เส้นทางสำหรับหน้า BuyerService
+  '/selerService': (BuildContext context) => SalerService(), // เส้นทางสำหรับหน้า SalerService
+  '/riderService': (BuildContext context) => RiderService(), // เส้นทางสำหรับหน้า RiderService
 };
 
 // สร้างตัวแปร String ที่เป็นเส้นทางเริ่มต้นของแอป
