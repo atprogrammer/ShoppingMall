@@ -41,7 +41,7 @@ class _AuthenState extends State<Authen> {
                   size), // เรียกใช้ฟังก์ชัน buildPassWord เพื่อแสดงช่องกรอกรหัสผ่าน
               buidLogin(
                   size), // เรียกใช้ฟังก์ชัน buildbuidLogin เพื่อแสดงปุ่มกดล๊อกอิน
-              buildCreateAccount(),
+              buildCreateAccount(), // เรียกใช้ฟังก์ชัน buildCreateAccount เพื่อไปยังหน้าสร้าง Account
             ],
           ),
         ),
@@ -49,7 +49,30 @@ class _AuthenState extends State<Authen> {
     );
   }
 
-  Row buidLogin(double size) {
+ Widget buildCreateAccount() {
+  // ฟังก์ชัน buildCreateAccount สร้างแถว (Row) ที่มีการจัดเรียงข้อความและปุ่มสร้างบัญชีให้อยู่กึ่งกลางของหน้าจอ
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    // จัดตำแหน่ง Row ให้อยู่กึ่งกลางแนวนอน
+    children: [
+      ShowTitle(
+        title: 'Non Account ?',
+        // ข้อความแสดงสำหรับผู้ที่ยังไม่มีบัญชี
+        testStyle: MyConstant().h3Style(),
+        // ใช้รูปแบบข้อความจากฟังก์ชัน h3Style ใน MyConstant
+      ),
+      TextButton(
+        onPressed: () =>
+            Navigator.pushNamed(context, MyConstant.rountCreateAccount),
+        // เมื่อกดปุ่มจะนำผู้ใช้ไปยังหน้า Create Account
+        child: Text('Create Account'),
+        // ข้อความที่แสดงบนปุ่ม
+      ),
+    ],
+  );
+}
+
+  Widget buidLogin(double size) {
     // ฟังก์ชัน buidLogin สร้างแถว (Row) ที่มีการจัดเรียงปุ่มเข้าสู่ระบบให้อยู่กึ่งกลางของหน้าจอ
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +98,7 @@ class _AuthenState extends State<Authen> {
   }
 
   // ฟังก์ชัน buildUser สร้างแถว (Row) ที่มีการจัดเรียงช่องกรอกชื่อผู้ใช้ให้อยู่กึ่งกลางของหน้าจอ
-  Row buildUser(double size) {
+  Widget buildUser(double size) {
     return Row(
       mainAxisAlignment:
           MainAxisAlignment.center, // จัดตำแหน่ง Row ให้อยู่กึ่งกลางแนวนอน
@@ -115,7 +138,7 @@ class _AuthenState extends State<Authen> {
   }
 
   // ฟังก์ชัน buildPassWord สร้างแถว (Row) ที่มีการจัดเรียงช่องกรอกรหัสผ่านให้อยู่กึ่งกลางของหน้าจอ
-  Row buildPassWord(double size) {
+  Widget buildPassWord(double size) {
     return Row(
       mainAxisAlignment:
           MainAxisAlignment.center, // จัดตำแหน่ง Row ให้อยู่กึ่งกลางแนวนอน
@@ -181,7 +204,7 @@ class _AuthenState extends State<Authen> {
   }
 
   // ฟังก์ชัน buildAppName สร้างแถว (Row) ที่มีการจัดเรียงชื่อแอปให้อยู่กึ่งกลางของหน้าจอ
-  Row buildAppName() {
+  Widget buildAppName() {
     return Row(
       mainAxisAlignment:
           MainAxisAlignment.center, // จัดตำแหน่ง Row ให้อยู่กึ่งกลางแนวนอน
@@ -197,7 +220,7 @@ class _AuthenState extends State<Authen> {
   }
 
   // ฟังก์ชัน buildImage สร้างแถว (Row) ที่มีการจัดเรียงภาพให้อยู่กึ่งกลางของหน้าจอ
-  Row buildImage(double size) {
+  Widget buildImage(double size) {
     return Row(
       mainAxisAlignment:
           MainAxisAlignment.center, // จัดตำแหน่ง Row ให้อยู่กึ่งกลางแนวนอน
@@ -208,30 +231,6 @@ class _AuthenState extends State<Authen> {
           child: ShowImage(
               path: MyConstant
                   .image1), // แสดงภาพจาก ShowImage โดยใช้ path จาก MyConstant
-        ),
-      ],
-    );
-  }
-}
-
-class buildCreateAccount extends StatelessWidget {
-  const buildCreateAccount({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ShowTitle(
-          title: 'Non Account ?',
-          testStyle: MyConstant().h3Style(),
-        ),
-        TextButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.rountCreateAccount),
-          child: Text('Create Account'),
         ),
       ],
     );
