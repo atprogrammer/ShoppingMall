@@ -21,6 +21,7 @@ class MyConstant {
   static const String image2 = 'images/image2.png'; // ที่อยู่ไฟล์ของภาพ image2
   static const String image3 = 'images/image3.png'; // ที่อยู่ไฟล์ของภาพ image3
   static const String image4 = 'images/image4.png'; // ที่อยู่ไฟล์ของภาพ image4
+  static const String avatar = 'images/avatar.png'; // ที่อยู่ไฟล์ของภาพ avatar
 
   // Color
   static const Color primary = Color(0xff87861d); // สีหลักที่ใช้ในแอป
