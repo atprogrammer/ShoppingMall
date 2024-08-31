@@ -51,5 +51,9 @@
     <string>Need Image for Upload to Server</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Need Image for Upload to Server</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
+    <key>NSLocationAlwaysUsegeDescription</key>
+    <string>This app needs access to location when in the backgroud.</string>
 </dict>
 </plist>
