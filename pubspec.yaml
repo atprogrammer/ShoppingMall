@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.6 #ติดตั้งเพิ่ม
   image_picker: ^1.1.2 #ติดตั้งเพิ่ม
   geolocator: ^7.1.0 #ติดตั้งเพิ่ม
+  google_maps_flutter: ^2.9.0 #ติดตั้งเพิ่ม
 dev_dependencies:
   flutter_test:
     sdk: flutter
