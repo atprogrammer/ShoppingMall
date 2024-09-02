@@ -128,9 +128,7 @@ class _CreateAccountState extends State<CreateAccount> {
         .width; // เก็บความกว้างของหน้าจอในตัวแปร size
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          buildCreateNewAccount()
-        ],
+        actions: [buildCreateNewAccount()],
         title: Text('Create New account'), // แสดงชื่อแถบด้านบนของแอป
         backgroundColor: MyConstant.primary, // กำหนดสีพื้นหลังของ AppBar
       ),
@@ -183,19 +181,23 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  IconButton buildCreateNewAccount() { // สร้าง Button สำหรับสร้าง Account
+  IconButton buildCreateNewAccount() {
+    // สร้าง Button สำหรับสร้าง Account
     return IconButton(
-          onPressed: () {
-            if (formKey.currentState!.validate()) { // ตรวจสอบว่า Form ถูกกรอกครบหรือไม่
-              if(typeUser == null){ // ถ้ายังไม่เลือก TypeUser ให้แสดง Dialog
-                MyDialog().normalDialog(context, "ยังไม่ได้เลือก TypeUser", "กรุณาเลือก TypeUser"); // แสดง Dialog เตือน
-              }else{
-                print("Process Insert to Database");
-              }
-            }
-          },
-          icon: Icon(Icons.cloud_upload),
-        );
+      onPressed: () {
+        if (formKey.currentState!.validate()) {
+          // ตรวจสอบว่า Form ถูกกรอกครบหรือไม่
+          if (typeUser == null) {
+            // ถ้ายังไม่เลือก TypeUser ให้แสดง Dialog
+            MyDialog().normalDialog(context, "ยังไม่ได้เลือก TypeUser",
+                "กรุณาเลือก TypeUser"); // แสดง Dialog เตือน
+          } else {
+            print("Process Insert to Database");
+          }
+        }
+      },
+      icon: Icon(Icons.cloud_upload),
+    );
   }
 
   Set<Marker> setMarker() => <Marker>[
@@ -506,7 +508,8 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
-            keyboardType: TextInputType.phone, // กำหนดประเภทของ Keyboard แบบตัวเลข
+            keyboardType:
+                TextInputType.phone, // กำหนดประเภทของ Keyboard แบบตัวเลข
             validator: (value) {
               //ตรวจสอบการคียร์ข้อมูล
               if (value!.isEmpty) {
