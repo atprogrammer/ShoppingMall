@@ -29,6 +29,9 @@ class _CreateAccountState extends State<CreateAccount> {
   double? lat,
       lng; // ประกาศตัวแปรชนิด double สำหรับเก็บค่า latitude และ longitude ของผู้ใช้ ซึ่งอาจเป็น null
 
+  final formKey = GlobalKey<
+      FormState>(); // กำหนดตัวแปร FormKey สำหรับใช้กับ Form ของ CreateAccount
+
   @override
   void initState() {
     super
@@ -125,6 +128,9 @@ class _CreateAccountState extends State<CreateAccount> {
         .width; // เก็บความกว้างของหน้าจอในตัวแปร size
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          buildCreateNewAccount()
+        ],
         title: Text('Create New account'), // แสดงชื่อแถบด้านบนของแอป
         backgroundColor: MyConstant.primary, // กำหนดสีพื้นหลังของ AppBar
       ),
@@ -133,39 +139,63 @@ class _CreateAccountState extends State<CreateAccount> {
         // เมื่อผู้ใช้แตะที่จอ ฟังก์ชันนี้จะทำการยกเลิกการโฟกัสของ TextFormField หรือคีย์บอร์ด
         behavior: HitTestBehavior.opaque,
         // กำหนดพฤติกรรมของ GestureDetector ให้สามารถตรวจจับการแตะที่จอได้ทั่วพื้นที่
-        child: ListView(
-          padding: EdgeInsets.all(
-              16), // กำหนด Padding รอบ ๆ เนื้อหาใน ListView เป็น 16 พิกเซล
-          children: [
-            buildTitle(
-                'ข้อมูลทั่วไป :'), // เรียกใช้ Widget สำหรับแสดง Title "ข้อมูลทั่วไป"
-            buildName(size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกชื่อ
-            buildTitle(
-                'ชนิดของ User :'), // เรียกใช้ Widget สำหรับแสดง Title "ชนิดของ User"
-            buildRadioBuyer(
-                size), // เรียกใช้ Widget สำหรับสร้าง RadioButton สำหรับ Buyer
-            buildRadioSeller(
-                size), // เรียกใช้ Widget สำหรับสร้าง RadioButton สำหรับ Seller
-            buildRadioRider(
-                size), // เรียกใช้ Widget สำหรับสร้าง RadioButton สำหรับ Rider
-            buildTitle(
-                'ข้อมูลพื้นฐาน :'), // เรียกใช้ Widget สำหรับแสดง Title "ข้อมูลพื้นฐาน"
-            buildAddress(size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกที่อยู่
-            buildPhone(
-                size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกหมายเลขโทรศัพท์
-            buildUser(size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกชื่อผู้ใช้
-            buildPassword(size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกรหัสผ่าน
-            buildTitle('รูปภาพ :'), // เรียกใช้ Widget สำหรับแสดง Title "รูปภาพ"
-            buildSubTitle(), // เรียกใช้ Widget สำหรับแสดงคำอธิบายสั้น ๆ เกี่ยวกับรูปภาพ
-            buildAvatar(
-                size), // เรียกใช้ Widget สำหรับสร้าง UI เพื่อเลือกรูปภาพ Avatar
-            buildTitle(
-                'แสดงพิกัดที่คุณอยู่'), // เรียกใช้ Widget สำหรับแสดง Title "แสดงพิกัดที่คุณอยู่"
-            buildMap(), // แสดงค่าที่ได้จากการคำนวณพิกัดที่คุณอยู่
-          ],
+        child: Form(
+          key:
+              formKey, // สร้าง Form ของแอป โดยนำ formKey มาล้อมไว้ไว้ใน Form ของแอป
+          child: SingleChildScrollView(
+            // สร้าง SingleChildScrollView
+            child: Column(
+              children: [
+                buildTitle(
+                    'ข้อมูลทั่วไป :'), // เรียกใช้ Widget สำหรับแสดง Title "ข้อมูลทั่วไป"
+                buildName(size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกชื่อ
+                buildTitle(
+                    'ชนิดของ User :'), // เรียกใช้ Widget สำหรับแสดง Title "ชนิดของ User"
+                buildRadioBuyer(
+                    size), // เรียกใช้ Widget สำหรับสร้าง RadioButton สำหรับ Buyer
+                buildRadioSeller(
+                    size), // เรียกใช้ Widget สำหรับสร้าง RadioButton สำหรับ Seller
+                buildRadioRider(
+                    size), // เรียกใช้ Widget สำหรับสร้าง RadioButton สำหรับ Rider
+                buildTitle(
+                    'ข้อมูลพื้นฐาน :'), // เรียกใช้ Widget สำหรับแสดง Title "ข้อมูลพื้นฐาน"
+                buildAddress(
+                    size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกที่อยู่
+                buildPhone(
+                    size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกหมายเลขโทรศัพท์
+                buildUser(
+                    size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกชื่อผู้ใช้
+                buildPassword(
+                    size), // เรียกใช้ Widget สำหรับสร้างช่องกรอกรหัสผ่าน
+                buildTitle(
+                    'รูปภาพ :'), // เรียกใช้ Widget สำหรับแสดง Title "รูปภาพ"
+                buildSubTitle(), // เรียกใช้ Widget สำหรับแสดงคำอธิบายสั้น ๆ เกี่ยวกับรูปภาพ
+                buildAvatar(
+                    size), // เรียกใช้ Widget สำหรับสร้าง UI เพื่อเลือกรูปภาพ Avatar
+                buildTitle(
+                    'แสดงพิกัดที่คุณอยู่'), // เรียกใช้ Widget สำหรับแสดง Title "แสดงพิกัดที่คุณอยู่"
+                buildMap(), // แสดงค่าที่ได้จากการคำนวณพิกัดที่คุณอยู่
+              ],
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  IconButton buildCreateNewAccount() { // สร้าง Button สำหรับสร้าง Account
+    return IconButton(
+          onPressed: () {
+            if (formKey.currentState!.validate()) { // ตรวจสอบว่า Form ถูกกรอกครบหรือไม่
+              if(typeUser == null){ // ถ้ายังไม่เลือก TypeUser ให้แสดง Dialog
+                MyDialog().normalDialog(context, "ยังไม่ได้เลือก TypeUser", "กรุณาเลือก TypeUser"); // แสดง Dialog เตือน
+              }else{
+                print("Process Insert to Database");
+              }
+            }
+          },
+          icon: Icon(Icons.cloud_upload),
+        );
   }
 
   Set<Marker> setMarker() => <Marker>[
@@ -379,6 +409,13 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            validator: (value) {
+              //ตรวจสอบการคียร์ข้อมูล
+              if (value!.isEmpty) {
+                // ถ้า TextFormField ไม่มีข้อความ
+                return 'กรุณากรอก Name ด้วยครับ'; //ส่งข้อความแจ้งเตือน
+              } else {}
+            },
             decoration: InputDecoration(
               labelStyle: MyConstant()
                   .h3Style(), // ใช้รูปแบบข้อความจากฟังก์ชัน h3Style ใน MyConstant
@@ -419,6 +456,13 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            validator: (value) {
+              //ตรวจสอบการคียร์ข้อมูล
+              if (value!.isEmpty) {
+                // ถ้า TextFormField ไม่มีข้อความ
+                return 'กรุณากรอก Address ด้วยครับ'; //ส่งข้อความแจ้งเตือน
+              } else {}
+            },
             maxLines: 3,
             decoration: InputDecoration(
               hintText: 'Address :',
@@ -462,6 +506,14 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            keyboardType: TextInputType.phone, // กำหนดประเภทของ Keyboard แบบตัวเลข
+            validator: (value) {
+              //ตรวจสอบการคียร์ข้อมูล
+              if (value!.isEmpty) {
+                // ถ้า TextFormField ไม่มีข้อความ
+                return 'กรุณากรอก Phone ด้วยครับ'; //ส่งข้อความแจ้งเตือน
+              } else {}
+            },
             decoration: InputDecoration(
               labelStyle: MyConstant()
                   .h3Style(), // ใช้รูปแบบข้อความจากฟังก์ชัน h3Style ใน MyConstant
@@ -502,6 +554,13 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            validator: (value) {
+              //ตรวจสอบการคียร์ข้อมูล
+              if (value!.isEmpty) {
+                // ถ้า TextFormField ไม่มีข้อความ
+                return 'กรุณากรอก Username ด้วยครับ'; //ส่งข้อความแจ้งเตือน
+              } else {}
+            },
             decoration: InputDecoration(
               labelStyle: MyConstant()
                   .h3Style(), // ใช้รูปแบบข้อความจากฟังก์ชัน h3Style ใน MyConstant
@@ -542,6 +601,13 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            validator: (value) {
+              //ตรวจสอบการคียร์ข้อมูล
+              if (value!.isEmpty) {
+                // ถ้า TextFormField ไม่มีข้อความ
+                return 'กรุณากรอก Password ด้วยครับ'; //ส่งข้อความแจ้งเตือน
+              } else {}
+            },
             decoration: InputDecoration(
               labelStyle: MyConstant()
                   .h3Style(), // ใช้รูปแบบข้อความจากฟังก์ชัน h3Style ใน MyConstant

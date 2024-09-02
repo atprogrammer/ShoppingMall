@@ -9,7 +9,8 @@ import 'package:shoppingmall/widgets/show_title.dart'; // นำเข้า wid
 class MyDialog {
   // คลาส MyDialog ใช้สำหรับแสดง dialog ที่ปรับแต่งได้ตามต้องการในแอปพลิเคชัน
 
-  Future<Null> alertLocationService(BuildContext context, String title, String message) async {
+  Future<Null> alertLocationService(
+      BuildContext context, String title, String message) async {
     // ฟังก์ชัน alertLocationService ใช้สำหรับแสดง AlertDialog เมื่อ Location Service ถูกปิด
     // รับพารามิเตอร์ context สำหรับการกำหนดบริบทของหน้าจอ, title สำหรับหัวข้อของ AlertDialog, และ message สำหรับข้อความย่อย
 
@@ -21,23 +22,54 @@ class MyDialog {
         title: ListTile(
           // ส่วนหัวของ AlertDialog ใช้ ListTile เพื่อแสดงรูปภาพและข้อความ
 
-          leading: ShowImage(path: MyConstant.image4), // แสดงรูปภาพที่ระบุใน MyConstant.image4 ทางด้านซ้ายของ ListTile
+          leading: ShowImage(
+              path: MyConstant.image4), // แสดงรูปภาพที่ระบุใน MyConstant.image4 ทางด้านซ้ายของ ListTile
           title: ShowTitle(
               title: title,
-              testStyle: MyConstant().h2Style()), // แสดงข้อความหัวเรื่องที่รับเข้ามาและใช้สไตล์ที่กำหนดใน MyConstant
+              testStyle: MyConstant()
+                  .h2Style()), // แสดงข้อความหัวเรื่องที่รับเข้ามาและใช้สไตล์ที่กำหนดใน MyConstant
           subtitle: ShowTitle(
               title: message,
-              testStyle: MyConstant().h3Style()), // แสดงข้อความย่อยที่รับเข้ามาและใช้สไตล์ที่กำหนดใน MyConstant
+              testStyle: MyConstant()
+                  .h3Style()), // แสดงข้อความย่อยที่รับเข้ามาและใช้สไตล์ที่กำหนดใน MyConstant
         ),
         actions: [
           // กำหนดปุ่ม Action สำหรับ AlertDialog
           TextButton(
               onPressed: () async {
                 // เมื่อผู้ใช้กดปุ่ม OK จะทำการเปิดการตั้งค่าตำแหน่งที่ตั้งของอุปกรณ์
-                await Geolocator.openLocationSettings(); // เปิดหน้าต่างการตั้งค่าตำแหน่งที่ตั้งของอุปกรณ์
+                await Geolocator
+                    .openLocationSettings(); // เปิดหน้าต่างการตั้งค่าตำแหน่งที่ตั้งของอุปกรณ์
                 exit(0); // ปิดแอปพลิเคชันหลังจากเปิดการตั้งค่าเรียบร้อยแล้ว
               },
-              child: Text('OK')) // แสดงปุ่ม OK ที่เมื่อกดแล้วจะปิด AlertDialog และทำการเปิดการตั้งค่าตำแหน่งที่ตั้ง
+              child: Text(
+                  'OK')) // แสดงปุ่ม OK ที่เมื่อกดแล้วจะปิด AlertDialog และทำการเปิดการตั้งค่าตำแหน่งที่ตั้ง
+        ],
+      ),
+    );
+  }
+
+  Future<Null> normalDialog(
+      BuildContext context, String title, String message) async {
+    // ฟังก์ชัน normalDialog ใช้สำหรับแสดง SimpleDialog ที่มีเนื้อหาตามที่ระบุ
+    showDialog(
+      context: context, // กำหนดบริบทของหน้าจอปัจจุบันที่ใช้แสดง SimpleDialog
+      builder: (context) => SimpleDialog(
+        // สร้าง SimpleDialog พร้อมกับการกำหนดรูปร่างหน้าตา
+
+        title: ListTile(
+          // ส่วนหัวของ SimpleDialog ใช้ ListTile เพื่อแสดงรูปภาพและข้อความ
+
+          leading: ShowImage(path: MyConstant.image1), // แสดงรูปภาพที่ระบุใน MyConstant.image1 ทางด้านซ้ายของ ListTile
+          title: ShowTitle(title: title, testStyle: MyConstant().h2Style()), // แสดงข้อความหัวเรื่องที่รับเข้ามาและใช้สไตล์ที่กำหนดใน MyConstant
+          subtitle:
+              ShowTitle(title: message, testStyle: MyConstant().h3Style()), // แสดงข้อความย่อยที่รับเข้ามาและใช้สไตล์ที่กำหนดใน MyConstant
+        ),
+        children: [
+          // กำหนดปุ่ม Action สำหรับ SimpleDialog
+          TextButton(
+              onPressed: () => Navigator.pop(context), // เมื่อผู้ใช้กดปุ่ม OK จะปิด SimpleDialog โดยการใช้ Navigator.pop
+              child: Text('OK')) // แสดงปุ่ม OK ที่เมื่อกดแล้วจะปิด SimpleDialog
         ],
       ),
     );
