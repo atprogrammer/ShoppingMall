@@ -1,6 +1,7 @@
 import 'dart:async'; // นำเข้าไลบรารีสำหรับการใช้งาน Asynchronous (async/await) และ Future
 import 'dart:io'; // นำเข้าไลบรารีสำหรับการจัดการไฟล์และการทำงานกับระบบไฟล์
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart'; // นำเข้าแพ็กเกจ Material Design สำหรับการสร้าง UI
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart'; // นำเข้าแพ็กเกจ ImagePicker สำหรับการเลือกรูปภาพจากกล้องหรือแกลเลอรี
@@ -32,6 +33,16 @@ class _CreateAccountState extends State<CreateAccount> {
   final formKey = GlobalKey<
       FormState>(); // กำหนดตัวแปร FormKey สำหรับใช้กับ Form ของ CreateAccount
 
+  TextEditingController nameController =
+      TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บค่าชื่อผู้ใช้
+  TextEditingController addressController =
+      TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บค่าที่อยู่ผู้ใช้
+  TextEditingController userController =
+      TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บ User ของชื่อผู้ใช้
+  TextEditingController passwordController =
+      TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บ Password ของชื่อผู้ใช้
+  TextEditingController phoneController =
+      TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บ Phone ของชื่อผู้ใช้
   @override
   void initState() {
     super
@@ -193,11 +204,25 @@ class _CreateAccountState extends State<CreateAccount> {
                 "กรุณาเลือก TypeUser"); // แสดง Dialog เตือน
           } else {
             print("Process Insert to Database");
+            uploadPictureAndInsertData();
           }
         }
       },
       icon: Icon(Icons.cloud_upload),
     );
+  }
+
+  Future<Null> uploadPictureAndInsertData() async{
+    String name = nameController.text;
+    String address = addressController.text;
+    String phone = phoneController.text;
+    String user = userController.text;
+    String password = passwordController.text;
+
+    //print('## name = $name, address = $address, phone = $phone, user = $user , password= $password');
+    String path = '${MyConstant.domain}/shoppingmallAPI/getUserWhereUser.php?isAdd=true&user=$user';
+    await Dio().get(path).then((value) => 
+     print('## value ==>> $value'));
   }
 
   Set<Marker> setMarker() => <Marker>[
@@ -411,6 +436,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            controller: nameController, // ผูกข้อมูลกับตัวแปร Controller
             validator: (value) {
               //ตรวจสอบการคียร์ข้อมูล
               if (value!.isEmpty) {
@@ -458,6 +484,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            controller: addressController, // ผูกข้อมูลกับตัวแปร Controller
             validator: (value) {
               //ตรวจสอบการคียร์ข้อมูล
               if (value!.isEmpty) {
@@ -508,6 +535,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            controller: phoneController, // ผูกข้อมูลกับตัวแปร Controller
             keyboardType:
                 TextInputType.phone, // กำหนดประเภทของ Keyboard แบบตัวเลข
             validator: (value) {
@@ -557,6 +585,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+            controller: userController, // ผูกข้อมูลกับตัวแปร Controller
             validator: (value) {
               //ตรวจสอบการคียร์ข้อมูล
               if (value!.isEmpty) {
@@ -604,6 +633,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
+             controller: passwordController, // ผูกข้อมูลกับตัวแปร Controller
             validator: (value) {
               //ตรวจสอบการคียร์ข้อมูล
               if (value!.isEmpty) {

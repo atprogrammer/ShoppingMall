@@ -34,10 +34,11 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6 #ติดตั้งเพิ่ม
-  image_picker: ^1.1.2 #ติดตั้งเพิ่ม
-  geolocator: ^7.1.0 #ติดตั้งเพิ่ม
-  google_maps_flutter: ^2.9.0 #ติดตั้งเพิ่ม
+  cupertino_icons: ^1.0.6 #ติดตั้งเพิ่ม ใช้สำหรับ: ไอคอนสไตล์ iOS ในแอปพลิเคชัน Flutter ของคุณ เช่น ไอคอนต่างๆ ในแถบเครื่องมือ (Toolbars) หรือการนำทาง (Navigation).
+  image_picker: ^1.1.2 #ติดตั้งเพิ่ม ใช้สำหรับ: เลือกภาพจากแกลเลอรีหรือกล้องถ่ายรูปในอุปกรณ์มือถือ เพื่อใช้ในแอปพลิเคชันของคุณ.
+  geolocator: ^7.1.0 #ติดตั้งเพิ่ม ใช้สำหรับ: รับข้อมูลตำแหน่งปัจจุบัน (Location) ของอุปกรณ์ เช่น พิกัด GPS, การติดตามการเคลื่อนไหวของอุปกรณ์ (Movement tracking).
+  google_maps_flutter: ^2.9.0 #ติดตั้งเพิ่ม ใช้สำหรับ: การฝัง Google Maps ลงในแอปพลิเคชัน Flutter ของคุณ รวมถึงการแสดงแผนที่, มาร์คเกอร์, และเส้นทาง.
+  dio: ^5.6.0 #ติดตั้งเพิ่ม ใช้สำหรับ: การทำ HTTP requests เช่น GET, POST, PUT, DELETE และการจัดการ response รวมถึงการโหลดข้อมูลจาก API ในแอปพลิเคชันของคุณ.
 dev_dependencies:
   flutter_test:
     sdk: flutter
