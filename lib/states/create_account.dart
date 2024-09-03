@@ -1,5 +1,6 @@
 import 'dart:async'; // นำเข้าไลบรารีสำหรับการใช้งาน Asynchronous (async/await) และ Future
 import 'dart:io'; // นำเข้าไลบรารีสำหรับการจัดการไฟล์และการทำงานกับระบบไฟล์
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart'; // นำเข้าแพ็กเกจ Material Design สำหรับการสร้าง UI
@@ -25,6 +26,9 @@ class _CreateAccountState extends State<CreateAccount> {
   // คลาส _CreateAccountState เป็น State ของ CreateAccount
   String?
       typeUser; // ประกาศตัวแปรชนิด String สำหรับเก็บประเภทของผู้ใช้ (ผู้ซื้อ, ผู้ขาย, ผู้ส่ง) ซึ่งอาจเป็น null
+
+  String avatar = ''; // ตัวแปรชนิด String สำหรับเก็บค่า URL ของรูปภาพ
+
   File?
       file; // ประกาศตัวแปรชนิด File สำหรับเก็บไฟล์รูปภาพที่ผู้ใช้เลือก ซึ่งอาจเป็น null
   double? lat,
@@ -43,6 +47,7 @@ class _CreateAccountState extends State<CreateAccount> {
       TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บ Password ของชื่อผู้ใช้
   TextEditingController phoneController =
       TextEditingController(); // กำหนดตัวแปร TextEditingController สำหรับเก็บ Phone ของชื่อผู้ใช้
+
   @override
   void initState() {
     super
@@ -212,17 +217,72 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  Future<Null> uploadPictureAndInsertData() async{
+  Future<Null> uploadPictureAndInsertData() async {
+    // สร้างตัวแปร name, address, phone, user, password โดยรับค่าจาก TextField หรือ TextController ที่ผู้ใช้กรอกในฟอร์ม
     String name = nameController.text;
     String address = addressController.text;
     String phone = phoneController.text;
     String user = userController.text;
     String password = passwordController.text;
 
-    //print('## name = $name, address = $address, phone = $phone, user = $user , password= $password');
-    String path = '${MyConstant.domain}/shoppingmallAPI/getUserWhereUser.php?isAdd=true&user=$user';
-    await Dio().get(path).then((value) => 
-     print('## value ==>> $value'));
+    // สร้าง URL สำหรับเรียก API ตรวจสอบว่าผู้ใช้มีอยู่แล้วหรือไม่ โดยใช้ username ที่กรอกในฟอร์ม
+    String path =
+        '${MyConstant.domain}/shoppingmallAPI/getUserWhereUser.php?isAdd=true&user=$user';
+
+    // ใช้ Dio เพื่อส่ง HTTP GET request ไปยัง URL ที่สร้างขึ้น และรอผลลัพธ์จากเซิร์ฟเวอร์
+    await Dio().get(path).then((value) async {
+      // แสดงผลลัพธ์จากเซิร์ฟเวอร์ในคอนโซล
+      print('## value ==>> $value');
+
+      // ตรวจสอบว่าผลลัพธ์เป็น null หรือไม่ ซึ่งหมายความว่าผู้ใช้ยังไม่ถูกสร้างขึ้น
+      if (value.toString() == 'null') {
+        print('## User Ok');
+
+        // ตรวจสอบว่าผู้ใช้มีการอัปโหลดไฟล์รูปภาพหรือไม่
+        if (file == null) {
+          // ถ้าไม่มีการอัปโหลดรูปภาพ ให้เรียกใช้ฟังก์ชัน processInsertMysql() เพื่อบันทึกข้อมูลผู้ใช้ลงในฐานข้อมูล
+          processInsertMysql();
+        } else {
+          // ถ้ามีการอัปโหลดรูปภาพ
+          print('### process Upload Avatar');
+
+          // สร้าง URL สำหรับ API ที่ใช้ในการอัปโหลดรูปภาพไปยังเซิร์ฟเวอร์
+          String apiSaveAvatar =
+              '${MyConstant.domain}/shoppingmallAPI/saveAvatar.php';
+
+          // สร้างชื่อไฟล์สำหรับรูปภาพใหม่โดยใช้เลขสุ่ม
+          int i = Random().nextInt(100000);
+          String nameAvatar = 'avatar$i.jpg';
+
+          // สร้างแผนที่ (map) สำหรับเก็บข้อมูลรูปภาพที่ต้องการอัปโหลด
+          Map<String, dynamic> map = Map();
+
+          // เพิ่มไฟล์รูปภาพที่เลือกเข้าไปในแผนที่ พร้อมตั้งชื่อไฟล์ตามที่กำหนด
+          map['file'] =
+              await MultipartFile.fromFile(file!.path, filename: nameAvatar);
+
+          // สร้าง FormData จากแผนที่ที่สร้างขึ้น
+          FormData data = FormData.fromMap(map);
+
+          // ส่งข้อมูลรูปภาพไปยัง API ที่กำหนด เพื่อทำการอัปโหลดรูปภาพไปยังเซิร์ฟเวอร์
+          await Dio().post(apiSaveAvatar, data: data).then((value) {
+            // ถ้าอัปโหลดรูปภาพสำเร็จ ให้ตั้งค่า avatar เป็น path ของรูปภาพที่อัปโหลด
+            avatar = '/shoppingmallAPI/avatar/$nameAvatar';
+
+            // เรียกใช้ฟังก์ชัน processInsertMysql() เพื่อบันทึกข้อมูลผู้ใช้ลงในฐานข้อมูล
+            processInsertMysql();
+          });
+        }
+      } else {
+        // ถ้าพบว่าผู้ใช้มีอยู่แล้ว ให้แสดง dialog แจ้งเตือนว่า username นี้มีอยู่แล้ว
+        MyDialog().normalDialog(context, 'User False', 'Press Chang User');
+      }
+    });
+  }
+
+  Future<Null> processInsertMysql() async {
+    // แสดงข้อความในคอนโซลเมื่อเรียกใช้ฟังก์ชันนี้ และแสดง path ของ avatar ที่จะใช้
+    print('### processInsertMysql Work and avatar ==>> $avatar');
   }
 
   Set<Marker> setMarker() => <Marker>[
@@ -633,7 +693,7 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size *
               0.75, // กำหนดความกว้างของ Container เป็น 65% ของความกว้างหน้าจอ
           child: TextFormField(
-             controller: passwordController, // ผูกข้อมูลกับตัวแปร Controller
+            controller: passwordController, // ผูกข้อมูลกับตัวแปร Controller
             validator: (value) {
               //ตรวจสอบการคียร์ข้อมูล
               if (value!.isEmpty) {
