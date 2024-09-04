@@ -5,7 +5,7 @@ class MyConstant {
   static const String appName =
       'Shopping Mall'; // ชื่อของแอปพลิเคชันที่ใช้ทั่วทั้งแอป
 
-  static String domain = 'http://192.168.1.37'; // โดเมนของเซิร์ฟเวอร์
+  static String domain = 'http://192.168.1.6'; // โดเมนของเซิร์ฟเวอร์
 
   // Route
   static const String rountAuthen = '/authen'; // เส้นทางสำหรับหน้า Authen

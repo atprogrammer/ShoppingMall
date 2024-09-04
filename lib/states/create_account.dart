@@ -241,7 +241,15 @@ class _CreateAccountState extends State<CreateAccount> {
         // ตรวจสอบว่าผู้ใช้มีการอัปโหลดไฟล์รูปภาพหรือไม่
         if (file == null) {
           // ถ้าไม่มีการอัปโหลดรูปภาพ ให้เรียกใช้ฟังก์ชัน processInsertMysql() เพื่อบันทึกข้อมูลผู้ใช้ลงในฐานข้อมูล
-          processInsertMysql();
+          // เรียกใช้ฟังก์ชัน processInsertMysql เพื่อทำการบันทึกข้อมูลลงในฐานข้อมูล MySQL
+          // ข้อมูลที่ส่งไปยังฟังก์ชันประกอบด้วย name, address, phone, user, password, และ typeUser
+          processInsertMysql(
+              name: name,
+              address: address,
+              phone: phone,
+              user: user,
+              password: password,
+              typeUser: typeUser);
         } else {
           // ถ้ามีการอัปโหลดรูปภาพ
           print('### process Upload Avatar');
@@ -269,8 +277,15 @@ class _CreateAccountState extends State<CreateAccount> {
             // ถ้าอัปโหลดรูปภาพสำเร็จ ให้ตั้งค่า avatar เป็น path ของรูปภาพที่อัปโหลด
             avatar = '/shoppingmallAPI/avatar/$nameAvatar';
 
-            // เรียกใช้ฟังก์ชัน processInsertMysql() เพื่อบันทึกข้อมูลผู้ใช้ลงในฐานข้อมูล
-            processInsertMysql();
+            // เรียกใช้ฟังก์ชัน processInsertMysql เพื่อทำการบันทึกข้อมูลลงในฐานข้อมูล MySQL
+            // ข้อมูลที่ส่งไปยังฟังก์ชันประกอบด้วย name, address, phone, user, password, และ typeUser
+            processInsertMysql(
+                name: name,
+                address: address,
+                phone: phone,
+                user: user,
+                password: password,
+                typeUser: typeUser);
           });
         }
       } else {
@@ -280,9 +295,37 @@ class _CreateAccountState extends State<CreateAccount> {
     });
   }
 
-  Future<Null> processInsertMysql() async {
+  // ฟังก์ชัน processInsertMysql ใช้สำหรับส่งข้อมูลผู้ใช้ใหม่ไปยังเซิร์ฟเวอร์เพื่อบันทึกลงในฐานข้อมูล MySQL
+  // ข้อมูลที่ส่งประกอบด้วย name, address, phone, typeUser, user, password
+  Future<Null> processInsertMysql(
+      {String? name,
+      String? address,
+      String? phone,
+      String? typeUser,
+      String? user,
+      String? password}) async {
     // แสดงข้อความในคอนโซลเมื่อเรียกใช้ฟังก์ชันนี้ และแสดง path ของ avatar ที่จะใช้
     print('### processInsertMysql Work and avatar ==>> $avatar');
+
+    // กำหนด URL สำหรับ API ที่ใช้ในการ insert ข้อมูลผู้ใช้ใหม่ พร้อมทั้งส่งค่าต่าง ๆ ที่จำเป็นไปใน URL
+    String apiInsertUser =
+        '${MyConstant.domain}/shoppingmallAPI/insertUser.php?isAdd=true&name=$name&typeUser=$typeUser&address=$address&phone=$phone&user=$user&password=$password&avatar=$avatar&lat=$lat&lng=$lng';
+
+    // เรียกใช้ Dio เพื่อทำการส่ง HTTP GET request ไปยัง URL ที่กำหนด
+    // และดำเนินการต่อเมื่อได้รับ response กลับมา
+    await Dio().get(apiInsertUser).then((value) {
+      if (value.toString() == 'true') {
+        // ตรวจสอบว่าการ insert สำเร็จหรือไม่ โดยดูจากค่าที่ response กลับมา
+
+        Navigator.pop(
+            context); // หาก insert สำเร็จ จะทำการปิดหน้าปัจจุบันและย้อนกลับไปยังหน้าก่อนหน้า
+      } else {
+        // หาก insert ไม่สำเร็จ
+
+        // แสดง dialog เพื่อแจ้งเตือนผู้ใช้ว่าการ insert ไม่สำเร็จ
+        MyDialog().normalDialog(context, 'Insert False !!', 'Press Chang User');
+      }
+    });
   }
 
   Set<Marker> setMarker() => <Marker>[
